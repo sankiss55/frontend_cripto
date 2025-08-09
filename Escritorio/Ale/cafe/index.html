@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café Roma - Experiencia Única de Café</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-brown: #8B4A2B;
+            --dark-brown: #6B3E1F;
+            --light-brown: #D4A574;
+            --cream: #F7F3F0;
+            --orange: #E97D47;
+            --dark-orange: #CC6B3A;
+            --gray-dark: #2D3748;
+            --gray-light: #F7FAFC;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(45, 55, 72, 0.9) 0%, rgba(107, 62, 31, 0.8) 100%);
+        }
+        
+        .menu-card {
+            background: #FFFFFF;
+            transition: all 0.3s ease;
+            border: 1px solid #E2E8F0;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .btn-primary {
+            background-color: var(--orange);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--dark-orange);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: white;
+            color: var(--gray-dark);
+        }
+        
+        .section-pattern {
+            background-color: var(--gray-light);
+        }
+        
+        .event-card {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .event-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        
+        .event-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .event-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .event-card:hover .event-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Nuevo estilo para el menú de navegación */
+        #navbar.scrolled {
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-display font-bold text-white">Café Roma</div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#inicio" class="text-white hover:text-orange-400 transition-colors nav-link">Inicio</a>
+                    <a href="#menu" class="text-white hover:text-orange-400 transition-colors nav-link">Menú</a>
+                    <a href="#nosotros" class="text-white hover:text-orange-400 transition-colors nav-link">Nosotros</a>
+                    <a href="#eventos" class="text-white hover:text-orange-400 transition-colors nav-link">Eventos</a>
+                    <a href="#contacto" class="text-white hover:text-orange-400 transition-colors nav-link">Contacto</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+                <a href="#inicio" class="block py-2 text-white hover:text-orange-400">Inicio</a>
+                <a href="#menu" class="block py-2 text-white hover:text-orange-400">Menú</a>
+                <a href="#nosotros" class="block py-2 text-white hover:text-orange-400">Nosotros</a>
+                <a href="#eventos" class="block py-2 text-white hover:text-orange-400">Eventos</a>
+                <a href="#contacto" class="block py-2 text-white hover:text-orange-400">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                 alt="Coffee Shop Interior" class="w-full h-full object-cover">
+            <div class="hero-bg absolute inset-0"></div>
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-10 text-center px-6 max-w-5xl">
+            <h1 class="text-6xl md:text-8xl font-display font-bold text-white mb-6 hero-title">
+                Café Roma
+            </h1>
+            <div class="text-xl md:text-2xl text-orange-300 font-medium hero-subtitle mb-8">
+                <span id="typed-text"></span>
+            </div>
+            <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed hero-description mb-12">
+                Donde cada grano cuenta una historia y cada taza es una experiencia única. 
+                Descubre el arte del café en su máxima expresión.
+            </p>
+
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Section -->
+    <section class="py-20 section-pattern">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="text-center feature-card">
+                    <div class="w-20 h-20 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-award text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-semibold text-gray-800 mb-4">Café Premium</h3>
+                    <p class="text-gray-600 leading-relaxed">Granos seleccionados de las mejores plantaciones del mundo, tostados artesanalmente para garantizar el sabor perfecto.</p>
+                </div>
+                
+                <div class="text-center feature-card">
+                    <div class="w-20 h-20 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-users text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-semibold text-gray-800 mb-4">Ambiente Único</h3>
+                    <p class="text-gray-600 leading-relaxed">Un espacio diseñado para inspirar, relajar y conectar. El lugar perfecto para trabajar, estudiar o socializar.</p>
+                </div>
+                
+                <div class="text-center feature-card">
+                    <div class="w-20 h-20 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-heart text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-semibold text-gray-800 mb-4">Pasión por el Café</h3>
+                    <p class="text-gray-600 leading-relaxed">Más de una década perfeccionando el arte del café, con baristas expertos que crean cada bebida con amor y dedicación.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-display font-bold text-gray-800 mb-6 section-title">
+                    Nuestro <span class="text-orange-500">Menú</span>
+                </h2>
+                <div class="w-24 h-1 bg-orange-500 mx-auto mb-6"></div>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Una cuidadosa selección de bebidas y alimentos artesanales, preparados con ingredientes de la más alta calidad
+                </p>
+            </div>
+            
+            <!-- Menu Categories -->
+            <div class="flex justify-center mb-16">
+                <div class="bg-gray-100 rounded-xl p-2 flex flex-wrap gap-2">
+                    <button class="menu-filter active px-6 py-3 rounded-lg font-medium transition-all duration-300" data-filter="all">
+                        Todos
+                    </button>
+                    <button class="menu-filter px-6 py-3 rounded-lg font-medium transition-all duration-300" data-filter="coffee">
+                        Cafés Especiales
+                    </button>
+                    <button class="menu-filter px-6 py-3 rounded-lg font-medium transition-all duration-300" data-filter="drinks">
+                        Bebidas Frías
+                    </button>
+                    <button class="menu-filter px-6 py-3 rounded-lg font-medium transition-all duration-300" data-filter="food">
+                        Acompañamientos
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Menu Items -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="menu-items">
+                <!-- Coffee Items -->
+                <div class="menu-card rounded-2xl overflow-hidden menu-item" data-category="coffee">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Espresso Artesanal" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-lg text-sm font-medium">
+                            Bestseller
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-semibold text-gray-800 mb-3">Espresso Signature</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Blend exclusivo de granos arábica etíopes y colombianos, con notas de chocolate negro y caramelo</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-orange-500">$4.50</span>
+                           
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-card rounded-2xl overflow-hidden menu-item" data-category="coffee">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Cappuccino Arte" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-semibold text-gray-800 mb-3">Cappuccino Arte</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Espresso perfecto con leche vaporizada cremosa y arte latte personalizado por nuestros baristas expertos</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-orange-500">$5.25</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-card rounded-2xl overflow-hidden menu-item" data-category="coffee">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Latte Caramelo" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-semibold text-gray-800 mb-3">Latte Caramelo Salado</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Nuestra especialidad: espresso suave con leche cremosa, caramelo artesanal y un toque de sal marina</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-orange-500">$5.75</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cold Drinks -->
+                <div class="menu-card rounded-2xl overflow-hidden menu-item" data-category="drinks">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Cold Brew" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-lg text-sm font-medium">
+                            Refrescante
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-semibold text-gray-800 mb-3">Cold Brew Nitro</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Café extraído en frío durante 18 horas, servido con nitrógeno para una textura cremosa única</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-orange-500">$4.75</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-card rounded-2xl overflow-hidden menu-item" data-category="drinks">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1546173159-315724a31696?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Frappé" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-semibold text-gray-800 mb-3">Frappé Tropical</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Bebida helada con café, leche de coco, mango fresco y un toque de vainilla natural</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-orange-500">$6.25</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Food Items -->
+                <div class="menu-card rounded-2xl overflow-hidden menu-item" data-category="food">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1555507036-ab794f4afe5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Croissant Artesanal" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-lg text-sm font-medium">
+                            Recién Horneado
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-display font-semibold text-gray-800 mb-3">Croissant de Almendras</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Croissant francés tradicional relleno de crema de almendras y cubierto con almendras laminadas</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-orange-500">$3.75</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<section id="eventos" class="py-20 section-pattern">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-display font-bold text-gray-800 mb-6 section-title">
+                    Nuestros <span class="text-orange-500">Eventos</span>
+                </h2>
+                <div class="w-24 h-1 bg-orange-500 mx-auto mb-6"></div>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Revive los momentos que hemos compartido. Un collage de nuestros eventos pasados llenos de sabor y comunidad.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Evento 1 -->
+                <div class="event-card rounded-xl">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" alt="Cata de Café">
+                    <div class="event-overlay">
+                        <h3 class="text-xl font-display font-bold mb-2">Cata de Café</h3>
+                        <p class="text-sm opacity-90">Una experiencia sensorial única con nuestros mejores granos</p>
+                    </div>
+                </div>
+                
+                <!-- Evento 2 -->
+                <div class="event-card rounded-xl">
+                    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Noche de Jazz">
+                    <div class="event-overlay">
+                        <h3 class="text-xl font-display font-bold mb-2">Noche de Jazz</h3>
+                        <p class="text-sm opacity-90">Disfruta de una velada inolvidable con música en vivo</p>
+                    </div>
+                </div>
+                
+                <!-- Evento 3 -->
+                <div class="event-card rounded-xl">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Taller de Latte Art">
+                    <div class="event-overlay">
+                        <h3 class="text-xl font-display font-bold mb-2">Taller de Latte Art</h3>
+                        <p class="text-sm opacity-90">Aprende el arte de crear diseños en tu café</p>
+                    </div>
+                </div>
+                
+                <!-- Evento 4 -->
+                <div class="event-card rounded-xl">
+                    <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Evento corporativo">
+                    <div class="event-overlay">
+                        <h3 class="text-xl font-display font-bold mb-2">Evento Corporativo</h3>
+                        <p class="text-sm opacity-90">Organiza tus eventos con nosotros, el lugar ideal para inspirar a tu equipo</p>
+                    </div>
+                </div>
+                
+                <!-- Evento 5 -->
+                <div class="event-card rounded-xl">
+                    <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Celebración privada">
+                    <div class="event-overlay">
+                        <h3 class="text-xl font-display font-bold mb-2">Celebración Privada</h3>
+                        <p class="text-sm opacity-90">Celebra tus momentos especiales en un ambiente acogedor y elegante</p>
+                    </div>
+                </div>
+                
+                <!-- Evento 6 -->
+                <div class="event-card rounded-xl">
+                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Club de lectura">
+                    <div class="event-overlay">
+                        <h3 class="text-xl font-display font-bold mb-2">Club de Lectura</h3>
+                        <p class="text-sm opacity-90">Comparte y disfruta de grandes historias con nosotros</p>
+                    </div>
+                </div>
+                
+               
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="nosotros" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-5xl font-display font-bold text-gray-800 mb-8 about-title">
+                        Nuestra <span class="text-orange-500">Historia</span>
+                    </h2>
+                    <div class="w-24 h-1 bg-orange-500 mb-8"></div>
+                    
+                    <p class="text-xl mb-8 leading-relaxed text-gray-600 about-text">
+                        Desde 2010, hemos sido pioneros en el arte del café specialty en nuestra ciudad. 
+                        Cada grano es una historia, cada taza es una experiencia cuidadosamente preparada.
+                    </p>
+                    
+                    <p class="text-lg mb-12 leading-relaxed text-gray-600 about-text">
+                        Trabajamos directamente con productores de café de origen único, garantizando 
+                        no solo la calidad excepcional, sino también prácticas sostenibles y comercio justo.
+                    </p>
+                    
+                   
+                </div>
+                
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="space-y-6">
+                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Barista Working" class="rounded-2xl about-image w-full h-48 object-cover">
+                        <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Coffee Beans" class="rounded-2xl about-image w-full h-48 object-cover">
+                    </div>
+                    <div class="space-y-6 mt-12">
+                        <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Latte Art" class="rounded-2xl about-image w-full h-48 object-cover">
+                        <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                             alt="Coffee Equipment" class="rounded-2xl about-image w-full h-48 object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-20 section-pattern">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-display font-bold text-gray-800 mb-6 contact-title">
+                    Visítanos <span class="text-orange-500">Hoy</span>
+                </h2>
+                <div class="w-24 h-1 bg-orange-500 mx-auto mb-6"></div>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Te esperamos en nuestro acogedor espacio con una taza de café recién preparado
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-16">
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <div class="bg-white rounded-2xl p-8 border border-gray-200">
+                        <h3 class="text-2xl font-display font-semibold text-gray-800 mb-8">Información de Contacto</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-orange-500 p-3 rounded-xl">
+                                    <i class="fas fa-map-marker-alt text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 text-lg mb-2">Ubicación</h4>
+                                    <p class="text-gray-600 leading-relaxed">Avenida del Café 456<br>Distrito Bohemio, Centro Histórico<br>Ciudad de México</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-orange-500 p-3 rounded-xl">
+                                    <i class="fas fa-phone text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 text-lg mb-2">Teléfono</h4>
+                                    <p class="text-gray-600">+52 (55) 1234-5678</p>
+                                    <p class="text-gray-600">WhatsApp: +52 (55) 8765-4321</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-orange-500 p-3 rounded-xl">
+                                    <i class="fas fa-envelope text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 text-lg mb-2">Email</h4>
+                                    <p class="text-gray-600">hola@caferoma.com</p>
+                                    <p class="text-gray-600">eventos@caferoma.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-orange-500 p-3 rounded-xl">
+                                    <i class="fas fa-clock text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 text-lg mb-2">Horarios</h4>
+                                    <div class="text-gray-600 space-y-1">
+                                        <p>Lunes - Viernes: 6:30 AM - 10:00 PM</p>
+                                        <p>Sábados: 7:00 AM - 11:00 PM</p>
+                                        <p>Domingos: 8:00 AM - 9:00 PM</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Social Media -->
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <h4 class="font-semibold text-gray-800 text-lg mb-4">Síguenos</h4>
+                            <div class="flex space-x-3">
+                                <a href="#" class="bg-orange-500 text-white p-3 rounded-xl hover:bg-orange-600 transition-colors">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="bg-orange-500 text-white p-3 rounded-xl hover:bg-orange-600 transition-colors">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="bg-orange-500 text-white p-3 rounded-xl hover:bg-orange-600 transition-colors">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="bg-orange-500 text-white p-3 rounded-xl hover:bg-orange-600 transition-colors">
+                                    <i class="fab fa-tiktok"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="contact-form">
+                    <div class="bg-white rounded-2xl p-8 border border-gray-200">
+                        <h3 class="text-2xl font-display font-semibold text-gray-800 mb-8">Envíanos un Mensaje</h3>
+                        
+                        <form class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-2">Nombre Completo</label>
+                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition-colors" placeholder="Tu nombre completo">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-2">Teléfono</label>
+                                    <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition-colors" placeholder="Tu número de teléfono">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Email</label>
+                                <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition-colors" placeholder="tu@email.com">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Asunto</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition-colors">
+                                    <option>Consulta General</option>
+                                    <option>Reserva de Eventos</option>
+                                    <option>Catering</option>
+                                    <option>Colaboraciones</option>
+                                    <option>Sugerencias</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Mensaje</label>
+                                <textarea rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 transition-colors resize-none" placeholder="Cuéntanos cómo podemos ayudarte..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-lg font-medium text-lg hover:bg-orange-600 transition-colors">
+                                <i class="fas fa-paper-plane mr-2"></i>
+                                Enviar Mensaje
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-16">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-xl font-semibold mb-6">Enlaces Rápidos</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#inicio" class="text-gray-300 hover:text-orange-400 transition-colors">Inicio</a></li>
+                        <li><a href="#menu" class="text-gray-300 hover:text-orange-400 transition-colors">Menú Completo</a></li>
+                        <li><a href="#nosotros" class="text-gray-300 hover:text-orange-400 transition-colors">Nuestra Historia</a></li>
+                        <li><a href="#eventos" class="text-gray-300 hover:text-orange-400 transition-colors">Eventos</a></li>
+                        <li><a href="#contacto" class="text-gray-300 hover:text-orange-400 transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-6">Información de Contacto</h4>
+                    <ul class="space-y-3">
+                        <li class="text-gray-300">Teléfono: +52 123 456 7890</li>
+                        <li class="text-gray-300">Email: info@caferoma.com</li>
+                        <li class="text-gray-300">Dirección: Calle Aroma, 123, Ciudad Café</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-6">Horarios</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>Lunes - Viernes: 6:30 AM - 10:00 PM</li>
+                        <li>Sábados: 7:00 AM - 11:00 PM</li>
+                        <li>Domingos: 8:00 AM - 9:00 PM</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-6">Síguenos</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="bg-orange-500 text-white p-3 rounded-xl hover:bg-orange-600 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-orange-500 text-white p-3 rounded-xl hover:bg-orange-600 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="bg-orange-500 text-white p-3 rounded-xl hover:bg-orange-600 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="bg-orange-500 text-white p-3 rounded-xl hover:bg-orange-600 transition-colors">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 Café Roma. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
+        // Typing animation for hero
+        const phrases = [
+            "Experiencia Única de Café",
+            "Momentos Especiales",
+            "Arte en Cada Taza",
+            "Tradición y Modernidad"
+        ];
+        
+        let currentPhrase = 0;
+        
+        function typePhrase() {
+            gsap.to("#typed-text", {
+                duration: 2,
+                text: phrases[currentPhrase],
+                ease: "none",
+                onComplete: () => {
+                    setTimeout(() => {
+                        currentPhrase = (currentPhrase + 1) % phrases.length;
+                        gsap.to("#typed-text", {
+                            duration: 1,
+                            text: "",
+                            ease: "none",
+                            onComplete: typePhrase
+                        });
+                    }, 2000);
+                }
+            });
+        }
+        
+        // Start typing animation
+        setTimeout(typePhrase, 1000);
+
+        // Navbar background change
+        ScrollTrigger.create({
+            start: "top -80",
+            end: 99999,
+            toggleClass: {className: "bg-black/80 backdrop-blur-md shadow-lg", targets: "#navbar"}
+        });
+
+        // Update navbar text color when background changes
+        ScrollTrigger.create({
+            start: "top -80",
+            end: 99999,
+            onToggle: self => {
+                const navLinks = document.querySelectorAll('#navbar a, #navbar button, #navbar .font-display');
+                if (self.isActive) {
+                    navLinks.forEach(link => {
+                        link.classList.add('text-white');
+                        link.classList.remove('text-gray-800');
+                    });
+                } else {
+                    navLinks.forEach(link => {
+                        link.classList.add('text-white');
+                        link.classList.remove('text-gray-800');
+                    });
+                }
+            }
+        });
+
+        // Mejorar el cambio de fondo del navbar
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Menu filtering with updated styling
+        const menuFilters = document.querySelectorAll('.menu-filter');
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        // Set initial active state
+        menuFilters[0].classList.add('bg-orange-500', 'text-white');
+        menuFilters[0].classList.remove('text-gray-600', 'hover:bg-gray-200');
+
+        menuFilters.forEach(filter => {
+            filter.addEventListener('click', () => {
+                // Remove active classes from all filters
+                menuFilters.forEach(f => {
+                    f.classList.remove('bg-orange-500', 'text-white');
+                    f.classList.add('text-gray-600', 'hover:bg-gray-200');
+                });
+                
+                // Add active classes to clicked filter
+                filter.classList.add('bg-orange-500', 'text-white');
+                filter.classList.remove('text-gray-600', 'hover:bg-gray-200');
+                
+                const filterValue = filter.getAttribute('data-filter');
+                
+                // Animación de salida
+                gsap.to('.menu-item', {
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.3,
+                    stagger: 0.1,
+                    onComplete: () => {
+                        menuItems.forEach(item => {
+                            if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                                item.style.display = 'block';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                        
+                        // Animación de entrada
+                        gsap.to('.menu-item:not([style*="display: none"])', {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.5,
+                            stagger: 0.1
+                        });
+                    }
+                });
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                gsap.from(mobileMenu, { duration: 0.3, opacity: 0, y: -20, ease: 'power2.out' });
+            } else {
+                gsap.to(mobileMenu, { 
+                    duration: 0.3, 
+                    opacity: 0, 
+                    y: -20, 
+                    ease: 'power2.in',
+                    onComplete: () => {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    gsap.to(window, {
+                        duration: 1.5,
+                        scrollTo: { y: target, offsetY: 50 },
+                        ease: 'power2.inOut'
+                    });
+                }
+            });
+        });
+
+        // GSAP animations
+        gsap.from('.hero-title', { duration: 1.5, y: 50, opacity: 0, ease: 'power2.out', delay: 0.5 });
+        gsap.from('.hero-subtitle', { duration: 1.2, y: 30, opacity: 0, ease: 'power2.out', delay: 0.8 });
+        gsap.from('.hero-description', { duration: 1, y: 20, opacity: 0, ease: 'power2.out', delay: 1.1 });
+        gsap.from('.btn-primary, .btn-secondary', { duration: 1, y: 20, opacity: 0, ease: 'power2.out', delay: 1.3, stagger: 0.2 });
+
+        // Animate sections on scroll
+        gsap.utils.toArray('.feature-card, .menu-item, .event-card, .about-image, .contact-info, .contact-form').forEach((element) => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                duration: 0.8,
+                y: 50,
+                opacity: 0,
+                ease: 'power3.out',
+            });
+        });
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const inputs = form.querySelectorAll('input, textarea, select');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.classList.add('border-red-500');
+                    gsap.fromTo(input, {x: -5}, {duration: 0.1, x: 5, yoyo: true, repeat: 5, ease: 'power2.inOut'});
+                } else {
+                    input.classList.remove('border-red-500');
+                }
+            });
+            
+            if (isValid) {
+                const successMsg = document.createElement('div');
+                successMsg.className = 'fixed top-20 right-6 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50';
+                successMsg.innerHTML = '<i class="fas fa-check-circle mr-2"></i>¡Mensaje enviado con éxito!';
+                document.body.appendChild(successMsg);
+                
+                gsap.fromTo(successMsg, 
+                    { opacity: 0, x: 100 },
+                    { 
+                        opacity: 1, 
+                        x: 0, 
+                        duration: 0.5,
+                        ease: 'power3.out',
+                        onComplete: () => {
+                            setTimeout(() => {
+                                gsap.to(successMsg, {
+                                    opacity: 0,
+                                    x: 100,
+                                    duration: 0.3,
+                                    onComplete: () => successMsg.remove()
+                                });
+                            }, 3000);
+                        }
+                    }
+                );
+                
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>
