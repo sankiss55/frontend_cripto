@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Villa Afrodita - Experiencia Exclusiva</title>
+    
+    <!-- Locomotive Scroll para animaciones de scroll sofisticadas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+    
+    <!-- GSAP para animaciones avanzadas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Split Type para animaciones de texto elegantes -->
+    <script src="https://unpkg.com/split-type"></script>
+    
+    <!-- Swiper.js para carruseles minimalistas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    
+    <!-- Barba.js para transiciones de página suaves -->
+    <script src="https://unpkg.com/@barba/core"></script>
+    
+    <!-- Tipografías Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2A3034;      /* Gris oscuro elegante */
+            --secondary: #4A525A;    /* Gris medio */
+            --accent: #B8926A;       /* Dorado apagado elegante */
+            --light: #F5F5F5;        /* Crema claro */
+            --light-accent: #E4E4E4; /* Gris claro */
+            --dark: #1A1A1A;         /* Negro elegante */
+            --white: #FFFFFF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        html, body {
+            cursor: default;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--white);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        /* Elementos de navegación */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.4s ease;
+            mix-blend-mode: difference;
+        }
+        
+        .nav-scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+            padding: 1rem 2rem;
+            mix-blend-mode: normal;
+        }
+        
+        .nav-scrolled .nav-link {
+            color: var(--dark);
+        }
+        
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--white);
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+        
+        .nav-scrolled .nav-logo {
+            color: var(--dark);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.8);
+        }
+        
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 5rem;
+        }
+        
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(2.5rem, 8vw, 7rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            max-width: 90%;
+        }
+        
+        .hero-title .char {
+            display: inline-block;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1),
+                        opacity 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            max-width: 50%;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.8;
+        }
+        
+        .scroll-indicator span {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background-color: var(--white);
+            animation: scrollDown 2s infinite;
+        }
+        
+        @keyframes scrollDown {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            50.1% { transform: scaleY(1); transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+        
+        /* Sección Sobre Nosotros */
+        .section {
+            padding: 8rem 0;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-header {
+            margin-bottom: 5rem;
+            position: relative;
+        }
+        
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-description {
+            font-size: 1.1rem;
+            max-width: 650px;
+            line-height: 1.8;
+        }
+        
+        /* Grid para habitaciones */
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-gap: 2rem;
+        }
+        
+        .room-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .room-item.large {
+            grid-column: span 8;
+            grid-row: span 2;
+            height: 600px;
+        }
+        
+        .room-item.small {
+            grid-column: span 4;
+            height: 290px;
+        }
+        
+        .room-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+        
+        .room-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(26, 26, 26, 0.3);
+            display: flex;
+            align-items: flex-end;
+            padding: 2rem;
+            color: var(--white);
+            opacity: 0;
+            transition: opacity 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+        
+        .room-item:hover .room-overlay {
+            opacity: 1;
+        }
+        
+        .room-item:hover .room-image {
+            transform: scale(1.05);
+        }
+        
+        .room-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+        
+        .room-price {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Sección de Servicios */
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-gap: 3rem;
+        }
+        
+        .service-item {
+            text-align: center;
+            padding: 2rem;
+            transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+        
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            border: 1px solid var(--light-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--accent);
+            font-size: 1.5rem;
+            transition: all 0.4s ease;
+        }
+        
+        .service-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .service-item:hover .service-icon {
+            background-color: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+        }
+        
+        .service-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .service-description {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--secondary);
+        }
+        
+        /* Galería */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 1rem;
+            margin-top: 3rem;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+        }
+        
+        .gallery-item:nth-child(3n+1) {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+        
+        .gallery-item:nth-child(5n+2) {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+        
+        .gallery-item:nth-child(7n) {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            color: var(--white);
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.1);
+        }
+        
+        /* Sección de Contacto */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 4rem;
+        }
+        
+        .contact-form {
+            padding-right: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--light-accent);
+            background: transparent;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            color: var(--dark);
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+        
+        .contact-info {
+            padding-left: 2rem;
+            border-left: 1px solid var(--light-accent);
+        }
+        
+        .contact-info-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-item {
+            margin-bottom: 1.5rem;
+            display: flex;
+        }
+        
+        .contact-icon {
+            margin-right: 1rem;
+            color: var(--accent);
+            font-size: 1.2rem;
+            min-width: 24px;
+        }
+        
+        .contact-text {
+            font-size: 0.95rem;
+        }
+        
+        .contact-text a {
+            color: var(--dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-text a:hover {
+            color: var(--accent);
+        }
+        
+        .btn {
+            background-color: var(--dark);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 4rem 0 1.5rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-gap: 4rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-text {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            opacity: 0.7;
+            max-width: 350px;
+        }
+        
+        .footer-heading {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-link {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-link a {
+            color: var(--white);
+            opacity: 0.7;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: opacity 0.3s ease;
+        }
+        
+        .footer-link a:hover {
+            opacity: 1;
+        }
+        
+        .footer-bottom {
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .copyright {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-link {
+            color: var(--white);
+            opacity: 0.7;
+            font-size: 1.2rem;
+            transition: opacity 0.3s ease;
+        }
+        
+        .social-link:hover {
+            opacity: 1;
+        }
+        
+        /* Botón de Reserva Flotante */
+        .booking-btn {
+            position: fixed;
+            right: 2rem;
+            bottom: 2rem;
+            background-color: var(--accent);
+            color: var(--white);
+            font-weight: 500;
+            padding: 1rem 2rem;
+            border-radius: 3px;
+            z-index: 90;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .booking-btn:hover {
+            background-color: var(--dark);
+            transform: translateY(-3px);
+        }
+        
+        /* Adaptabilidad */
+        @media (max-width: 1200px) {
+            .hero-content {
+                padding: 0 3rem;
+            }
+            
+            .hero-subtitle {
+                max-width: 70%;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .rooms-grid {
+                grid-gap: 1rem;
+            }
+            
+            .room-item.large {
+                height: 450px;
+            }
+            
+            .room-item.small {
+                height: 215px;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content {
+                padding: 0 2rem;
+            }
+            
+            .hero-subtitle {
+                max-width: 100%;
+            }
+            
+            .rooms-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .room-item.large, .room-item.small {
+                grid-column: span 1;
+                height: 350px;
+            }
+            
+            .gallery-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .gallery-item:nth-child(5n+2), .gallery-item:nth-child(7n) {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+                grid-gap: 2rem;
+            }
+            
+            .contact-info {
+                padding-left: 0;
+                border-left: none;
+                padding-top: 2rem;
+                border-top: 1px solid var(--light-accent);
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                grid-gap: 2rem;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .section {
+                padding: 6rem 0;
+            }
+            
+            .section-header {
+                margin-bottom: 3rem;
+            }
+            
+            .gallery-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Efectos de imagen */
+        .img-reveal {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .img-reveal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .img-reveal::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--accent);
+            transform: scaleX(1);
+            transform-origin: right;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        
+        .img-reveal.revealed::after {
+            transform: scaleX(0);
+        }
+        
+        /* Cursor personalizado */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            position: fixed;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            opacity: 0.6;
+            transition: transform 0.1s ease;
+        }
+        
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+            opacity: 0.5;
+        }
+        
+        /* Transiciones de página */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--dark);
+            z-index: 9999;
+            transform: scaleY(0);
+            transform-origin: bottom;
+        }
+    </style>
+</head>
+<body data-barba="wrapper">
+    <!-- Cursor personalizado -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Transición de página -->
+    <div class="transition-overlay"></div>
+
+    <!-- Navegación -->
+    <nav class="nav">
+        <a href="#" class="nav-logo">VILLA AFRODITA</a>
+        <div class="nav-links">
+            <a href="#inicio" class="nav-link">Inicio</a>
+            <a href="#habitaciones" class="nav-link">Habitaciones</a>
+            <a href="#servicios" class="nav-link">Servicios</a>
+            <a href="#galeria" class="nav-link">Galería</a>
+            <a href="#contacto" class="nav-link">Contacto</a>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main data-barba="container" data-barba-namespace="home">
+        <!-- Hero Section -->
+        <section id="inicio" class="hero">
+            <div class="hero-bg">
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Villa Afrodita">
+            </div>
+            <div class="hero-content">
+                <h1 class="hero-title">Un refugio de elegancia y tranquilidad</h1>
+                <p class="hero-subtitle">Descubra una experiencia única de hospedaje donde cada detalle ha sido cuidadosamente diseñado para su bienestar.</p>
+            </div>
+            <div class="scroll-indicator">
+                <span>Descubrir</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- Sección de Habitaciones -->
+        <section id="habitaciones" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-subtitle">Alojamiento Exclusivo</p>
+                    <h2 class="section-title">Nuestras Habitaciones</h2>
+                    <p class="section-description">Cada habitación en Villa Afrodita ha sido cuidadosamente diseñada para ofrecer una experiencia de hospedaje exclusiva, combinando elegancia atemporal con comodidades modernas.</p>
+                </div>
+                
+                <div class="rooms-grid">
+                    <div class="room-item large">
+                        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Suite Principal" class="room-image">
+                        <div class="room-overlay">
+                            <div>
+                                <h3 class="room-name">Suite Principal</h3>
+                                <p class="room-price">Desde €350 / noche</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="room-item small">
+                        <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Habitación Deluxe" class="room-image">
+                        <div class="room-overlay">
+                            <div>
+                                <h3 class="room-name">Habitación Deluxe</h3>
+                                <p class="room-price">Desde €210 / noche</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="room-item small">
+                        <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Suite Junior" class="room-image">
+                        <div class="room-overlay">
+                            <div>
+                                <h3 class="room-name">Suite Junior</h3>
+                                <p class="room-price">Desde €280 / noche</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Servicios -->
+        <section id="servicios" class="section" style="background-color: var(--light);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-subtitle">Experiencia Completa</p>
+                    <h2 class="section-title">Nuestros Servicios</h2>
+                    <p class="section-description">Ofrecemos servicios exclusivos diseñados para hacer de su estancia una experiencia inolvidable, atendiendo cada detalle con la máxima atención.</p>
+                </div>
+                
+                <div class="services-container">
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3 class="service-title">Gastronomía</h3>
+                        <p class="service-description">Nuestro restaurante ofrece una exquisita selección de platos locales e internacionales elaborados con ingredientes frescos y de temporada.</p>
+                    </div>
+                    
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <h3 class="service-title">Spa & Bienestar</h3>
+                        <p class="service-description">Relájese y rejuvenezca con nuestros tratamientos de spa diseñados para revitalizar cuerpo y mente en un ambiente de serenidad absoluta.</p>
+                    </div>
+                    
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-swimming-pool"></i>
+                        </div>
+                        <h3 class="service-title">Piscina Infinity</h3>
+                        <p class="service-description">Disfrute de nuestra piscina con vistas panorámicas, el lugar perfecto para relajarse mientras contempla el magnífico paisaje.</p>
+                    </div>
+                    
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <i class="fas fa-concierge-bell"></i>
+                        </div>
+                        <h3 class="service-title">Concierge 24H</h3>
+                        <p class="service-description">Nuestro equipo de concierge está disponible las 24 horas para asistirle con cualquier solicitud y hacer de su estancia una experiencia perfecta.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Galería -->
+        <section id="galeria" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-subtitle">Momentos Especiales</p>
+                    <h2 class="section-title">Galería Visual</h2>
+                    <p class="section-description">Explore a través de imágenes los espacios y detalles que hacen de Villa Afrodita un destino único para su próxima escapada.</p>
+                </div>
+                
+                <div class="gallery-container">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Exterior" class="gallery-image">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Piscina" class="gallery-image">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Spa" class="gallery-image">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Habitación" class="gallery-image">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Restaurante" class="gallery-image">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Lobby" class="gallery-image">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Contacto -->
+        <section id="contacto" class="section" style="background-color: var(--light);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-subtitle">Estamos A Su Disposición</p>
+                    <h2 class="section-title">Contacto</h2>
+                    <p class="section-description">Si desea obtener más información sobre nuestros servicios o realizar una reserva, no dude en ponerse en contacto con nosotros.</p>
+                </div>
+                
+                <div class="contact-grid">
+                    <div class="contact-form">
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Nombre completo</label>
+                                <input type="text" id="name" class="form-input" placeholder="Su nombre">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">Correo electrónico</label>
+                                <input type="email" id="email" class="form-input" placeholder="Su email">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Teléfono</label>
+                                <input type="tel" id="phone" class="form-input" placeholder="Su número de teléfono">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message" class="form-label">Mensaje</label>
+                                <textarea id="message" class="form-input" rows="4" placeholder="¿Cómo podemos ayudarle?"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn">Enviar Mensaje</button>
+                        </form>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <h3 class="contact-info-title">Información de Contacto</h3>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                Carretera de la Costa, Km 5<br>
+                                29680 Estepona, Málaga<br>
+                                España
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-text">
+                                <a href="tel:+34952123456">+34 952 12 34 56</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <a href="mailto:info@villaafrodita.com">info@villaafrodita.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-text">
+                                Recepción: 24 horas<br>
+                                Check-in: 15:00h<br>
+                                Check-out: 12:00h
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo">VILLA AFRODITA</div>
+                    <p class="footer-text">Un oasis de tranquilidad y elegancia donde cada huésped encuentra una experiencia excepcional, con atención personalizada y servicios de la más alta calidad.</p>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Enlaces</h4>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#inicio">Inicio</a></li>
+                        <li class="footer-link"><a href="#habitaciones">Habitaciones</a></li>
+                        <li class="footer-link"><a href="#servicios">Servicios</a></li>
+                        <li class="footer-link"><a href="#galeria">Galería</a></li>
+                        <li class="footer-link"><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Políticas</h4>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#">Términos y Condiciones</a></li>
+                        <li class="footer-link"><a href="#">Política de Privacidad</a></li>
+                        <li class="footer-link"><a href="#">Política de Cancelación</a></li>
+                        <li class="footer-link"><a href="#">Preguntas Frecuentes</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright">© 2024 Villa Afrodita. Todos los derechos reservados.</p>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón de Reserva Flotante -->
+    <a href="#contacto" class="booking-btn">Reservar Ahora</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar Locomotive Scroll
+            const scroll = new LocomotiveScroll({
+                el: document.querySelector('[data-barba="container"]'),
+                smooth: true,
+                smartphone: {
+                    smooth: false
+                },
+                tablet: {
+                    smooth: false
+                }
+            });
+            
+            // Registrar los plugins de GSAP
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Sincronizar ScrollTrigger con Locomotive Scroll
+            scroll.on('scroll', ScrollTrigger.update);
+            
+            ScrollTrigger.scrollerProxy('[data-barba="container"]', {
+                scrollTop(value) {
+                    return arguments.length ? scroll.scrollTo(value, 0, 0) : scroll.scroll.instance.scroll.y;
+                },
+                getBoundingClientRect() {
+                    return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+                },
+                pinType: document.querySelector('[data-barba="container"]').style.transform ? "transform" : "fixed"
+            });
+            
+            // Animación de texto en el hero
+            const heroTitle = new SplitType('.hero-title', { types: 'chars' });
+            const heroChars = heroTitle.chars;
+            
+            gsap.to(heroChars, {
+                opacity: 1,
+                y: 0,
+                stagger: 0.03,
+                duration: 1.5,
+                ease: "power4.out",
+                delay: 0.5
+            });
+            
+            // Animación del subtítulo del hero
+            gsap.to('.hero-subtitle', {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                ease: "power3.out",
+                delay: 1.2
+            });
+            
+            // Efecto parallax en la imagen del hero
+            gsap.to('.hero-bg img', {
+                scrollTrigger: {
+                    scroller: '[data-barba="container"]',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true
+                },
+                y: '30%',
+                ease: "none"
+            });
+            
+            // Animaciones al hacer scroll
+            const animateFrom = (elem, direction) => {
+                direction = direction || 1;
+                let x = 0,
+                    y = direction * 100;
+                if(elem.classList.contains('reveal-from-left')) {
+                    x = -100;
+                    y = 0;
+                } else if(elem.classList.contains('reveal-from-right')) {
+                    x = 100;
+                    y = 0;
+                }
+                
+                gsap.fromTo(elem, 
+                    { 
+                        x: x,
+                        y: y,
+                        autoAlpha: 0
+                    },
+                    {
+                        duration: 1.5,
+                        x: 0,
+                        y: 0,
+                        autoAlpha: 1,
+                        ease: 'expo.out',
+                        overwrite: 'auto'
+                    }
+                );
+            }
+            
+            const hide = (elem) => {
+                gsap.set(elem, {autoAlpha: 0});
+            }
+            
+            document.querySelectorAll('.section-header').forEach(elem => {
+                hide(elem);
+                ScrollTrigger.create({
+                    scroller: '[data-barba="container"]',
+                    trigger: elem,
+                    onEnter: () => animateFrom(elem),
+                    onEnterBack: () => animateFrom(elem, -1),
+                    onLeave: () => hide(elem)
+                });
+            });
+            
+            // Revelar imágenes con efecto
+            document.querySelectorAll('.img-reveal').forEach(elem => {
+                ScrollTrigger.create({
+                    scroller: '[data-barba="container"]',
+                    trigger: elem,
+                    start: 'top 80%',
+                    onEnter: () => {
+                        elem.classList.add('revealed');
+                    }
+                });
+            });
+            
+            // Cursor personalizado
+            const cursor = document.querySelector('.cursor');
+            const cursorFollower = document.querySelector('.cursor-follower');
+            
+            document.addEventListener('mousemove', e => {
+                gsap.to(cursor, {
+                    duration: 0.1,
+                    left: e.clientX,
+                    top: e.clientY
+                });
+                
+                gsap.to(cursorFollower, {
+                    duration: 0.3,
+                    left: e.clientX,
+                    top: e.clientY
+                });
+            });
+            
+            document.querySelectorAll('a, button, .room-item, .gallery-item').forEach(elem => {
+                elem.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    cursorFollower.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    cursorFollower.style.border = '1px solid transparent';
+                    cursorFollower.style.backgroundColor = 'rgba(184, 146, 106, 0.2)';
+                });
+                
+                elem.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursorFollower.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursorFollower.style.border = '1px solid var(--accent)';
+                    cursorFollower.style.backgroundColor = 'transparent';
+                });
+            });
+            
+            // Navegación al hacer scroll
+            window.addEventListener('scroll', () => {
+                const nav = document.querySelector('.nav');
+                if (window.scrollY > 100) {
+                    nav.classList.add('nav-scrolled');
+                } else {
+                    nav.classList.remove('nav-scrolled');
+                }
+            });
+            
+            // Inicializar Barba.js para transiciones de página
+            barba.init({
+                transitions: [{
+                    name: 'opacity-transition',
+                    leave(data) {
+                        return gsap.to(data.current.container, {
+                            opacity: 0,
+                            duration: 0.5
+                        });
+                    },
+                    enter(data) {
+                        return gsap.from(data.next.container, {
+                            opacity: 0,
+                            duration: 0.5
+                        });
+                    }
+                }]
+            });
+            
+            // Actualizar ScrollTrigger después de las transiciones de Barba
+            barba.hooks.after(() => {
+                scroll.update();
+                ScrollTrigger.refresh();
+            });
+
+            // Animaciones para elementos de servicios
+            gsap.from('.service-item', {
+                scrollTrigger: {
+                    scroller: '[data-barba="container"]',
+                    trigger: '.services-container',
+                    start: 'top 70%'
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: 'power3.out'
+            });
+            
+            // Animaciones para los elementos de la galería
+            gsap.from('.gallery-item', {
+                scrollTrigger: {
+                    scroller: '[data-barba="container"]',
+                    trigger: '.gallery-container',
+                    start: 'top 70%'
+                },
+                scale: 0.9,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: 'power3.out'
+            });
+            
+            // Gestionar envío de formulario de contacto
+            document.getElementById('contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+                
+                submitButton.textContent = 'Enviando...';
+                submitButton.disabled = true;
+                
+                // Simular envío del formulario
+                setTimeout(() => {
+                    submitButton.textContent = '¡Mensaje enviado!';
+                    this.reset();
+                    
+                    setTimeout(() => {
+                        submitButton.textContent = originalText;
+                        submitButton.disabled = false;
+                    }, 3000);
+                }, 1500);
+            });
+            
+            // Eventos de scroll suave para enlaces de navegación
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    
+                    if (target) {
+                        scroll.scrollTo(target);
+                    }
+                });
+            });
+            
+            // Reinicializar todo en el cambio de redimensionamiento de la ventana
+            window.addEventListener('resize', () => {
+                scroll.update();
+                ScrollTrigger.refresh();
+            });
+            
+            // Finalizar la inicialización
+            ScrollTrigger.addEventListener('refresh', () => scroll.update());
+            ScrollTrigger.refresh();
+        });
+    </script>
+</body>
+</html>
